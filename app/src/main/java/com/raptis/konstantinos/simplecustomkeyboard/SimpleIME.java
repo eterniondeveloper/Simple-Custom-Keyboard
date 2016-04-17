@@ -9,17 +9,20 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
+import com.raptis.konstantinos.simplecustomkeyboard.core.KeyHandler;
+
 /**
  * Created by konstantinos on 17/4/2016.
  */
 public class SimpleIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
-    public static final String CUSTOM_LOG = "cmlog";
 
+    // keyboard
     private KeyboardView kv;
     private Keyboard keyboard;
-
     private boolean caps = false;
+    // key handler
+    private KeyHandler keyHandler = new KeyHandler();
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
@@ -48,12 +51,12 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onPress(int primaryCode) {
-        Log.i(CUSTOM_LOG, "onPress");
+        keyHandler.keyPressed(primaryCode);
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        Log.i(CUSTOM_LOG, "onRelease");
+        keyHandler.keyReleased(primaryCode);
     }
 
     @Override
