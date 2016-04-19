@@ -40,7 +40,7 @@ public class KeyHandler {
         // check if key primary code mach to delete button key primary code
         if (keyObject.getPrimaryCode() == Key.DELETE_BUTTON.getPrimaryCode()) {
             errorRateCounter++;
-            return; // we dont want to buffer delete key
+            //return; // we don't want to buffer delete key
         }
 
         if (index >= BUFFER_SIZE) {
