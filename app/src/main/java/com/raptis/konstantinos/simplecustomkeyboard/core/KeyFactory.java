@@ -18,7 +18,7 @@ public class KeyFactory {
             {Key.Q_BUTTON, Key.W_BUTTON, Key.E_BUTTON, Key.R_BUTTON, Key.T_BUTTON, Key.Y_BUTTON, Key.U_BUTTON, Key.I_BUTTON, Key.O_BUTTON, Key.P_BUTTON},
             {Key.A_BUTTON, Key.S_BUTTON, Key.D_BUTTON, Key.F_BUTTON, Key.G_BUTTON, Key.H_BUTTON, Key.J_BUTTON, Key.K_BUTTON, Key.L_BUTTON, Key.SHARP_BUTTON},
             {Key.CAPS_LOCK_BUTTON, Key.Z_BUTTON, Key.X_BUTTON, Key.C_BUTTON, Key.V_BUTTON, Key.B_BUTTON, Key.N_BUTTON, Key.M_BUTTON, Key.FULL_STOP_BUTTON, Key.QUESTION_MARK_BUTTON},
-            {Key.COMMA_BUTTON, Key.SLASH_BUTTON}};
+            {Key.COMMA_BUTTON, Key.SLASH_BUTTON, Key.SPACE_BUTTON, Key.DELETE_BUTTON, Key.DONE_BUTTON}};
 
     // @Param : key which adjacent we want
     // @return : adjacent as a String
