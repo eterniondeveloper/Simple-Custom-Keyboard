@@ -23,6 +23,7 @@ package com.raptis.konstantinos.simplecustomkeyboard.util;
 public enum DigraphType {
 
     NULL(),
+    SAME_KEY_DIGRAPH(),
     ADJACENT_HORIZONTAL_DIGRAPH() ,
     ADJACENT_VERTICAL_DIGRAPH(),
     NON_ADJACENT_HORIZONTAL_DIGRAPH(),

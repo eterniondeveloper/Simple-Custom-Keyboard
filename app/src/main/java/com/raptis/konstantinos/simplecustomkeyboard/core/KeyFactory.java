@@ -13,8 +13,8 @@ public class KeyFactory {
     // keyboard layout
     public static String chars = "1234567890qwertyuiopasdfghjkl#↑zxcvbnm.?,/";
 
-    // keys primary code mapping
-    public static Key[][] keys = {{Key.ONE_BUTTON, Key.TWO_BUTTON, Key.THREE_BUTTON, Key.FOUR_BUTTON, Key.FIVE_BUTTON, Key.SIX_BUTTON, Key.SEVEN_BUTTON, Key.EIGHT_BUTTON, Key.NINE_BUTTON, Key.ZERO_BUTTON},
+    // keys primary code mapping (Contain keys for which we want to maintain digraph type)
+    public static Key[][] activeKeys = {{Key.ONE_BUTTON, Key.TWO_BUTTON, Key.THREE_BUTTON, Key.FOUR_BUTTON, Key.FIVE_BUTTON, Key.SIX_BUTTON, Key.SEVEN_BUTTON, Key.EIGHT_BUTTON, Key.NINE_BUTTON, Key.ZERO_BUTTON},
             {Key.Q_BUTTON, Key.W_BUTTON, Key.E_BUTTON, Key.R_BUTTON, Key.T_BUTTON, Key.Y_BUTTON, Key.U_BUTTON, Key.I_BUTTON, Key.O_BUTTON, Key.P_BUTTON},
             {Key.A_BUTTON, Key.S_BUTTON, Key.D_BUTTON, Key.F_BUTTON, Key.G_BUTTON, Key.H_BUTTON, Key.J_BUTTON, Key.K_BUTTON, Key.L_BUTTON, Key.SHARP_BUTTON},
             {Key.CAPS_LOCK_BUTTON, Key.Z_BUTTON, Key.X_BUTTON, Key.C_BUTTON, Key.V_BUTTON, Key.B_BUTTON, Key.N_BUTTON, Key.M_BUTTON, Key.FULL_STOP_BUTTON, Key.QUESTION_MARK_BUTTON},
@@ -67,8 +67,16 @@ public class KeyFactory {
     // @Param : keyObject is the key we want to examine its digraph type
     // @return : keyObject digraph type
     public static DigraphType getDigraphType(KeyObject keyObject) {
-        if(keyObject.getPrevious() == null) {
+        // digraph type will be NULL if current key is (space, delete or done) or if previous is null
+        if(keyObject.getPrevious() == null ||
+                keyObject.getPrimaryCode() == Key.SPACE_BUTTON.getPrimaryCode() ||
+                keyObject.getPrimaryCode() == Key.DELETE_BUTTON.getPrimaryCode() ||
+                keyObject.getPrimaryCode() == Key.DONE_BUTTON.getPrimaryCode()) {
             return DigraphType.NULL;
+        }
+        // digraph type will be SAME_KEY_DIGRAPH if previous key is the same with current
+        if(keyObject.getPrevious().getPrimaryCode() == keyObject.getPrimaryCode()) {
+            return DigraphType.SAME_KEY_DIGRAPH;
         }
         // current with it's previous
         boolean areAdjacent = areNeighbors(keyObject.getKeyChar(), keyObject.getPrevious().getKeyChar());

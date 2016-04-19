@@ -29,7 +29,7 @@ public class KeyHandler {
     // constructor
     public KeyHandler() {
         keysMap = new HashMap<>();
-        for (Key[] keyArray : KeyFactory.keys) {
+        for (Key[] keyArray : KeyFactory.activeKeys) {
             for (Key key : keyArray) {
                 keysMap.put(key.getPrimaryCode(), key);
             }
@@ -37,18 +37,10 @@ public class KeyHandler {
     }
 
     public void add(KeyObject keyObject) {
-        // check if key primary code mach to delete button key primary code
-        if (keyObject.getPrimaryCode() == Key.DELETE_BUTTON.getPrimaryCode()) {
-            errorRateCounter++;
-            //return; // we don't want to buffer delete key
-        }
 
-        if (index >= BUFFER_SIZE) {
-            buffer = new KeyObject[BUFFER_SIZE];
-            index = 0;
-        }
-        buffer[index] = keyObject;
-        index++;
+        /**
+         * DIGRAPH TYPE
+         */
 
         // check digraph type (only if key exists in keysMap)
         if (keysMap.containsKey(keyObject.getPrimaryCode())) {
@@ -56,6 +48,32 @@ public class KeyHandler {
             keyObject.setDigraphType(digraphType);
         }
 
+        /**
+         * CHECK FOR INACTIVE KEYS
+         */
+
+        // check if key primary code match to delete button key primary code
+        if (keyObject.getPrimaryCode() == Key.DELETE_BUTTON.getPrimaryCode()) {
+            errorRateCounter++;
+            return; // we don't want to buffer delete key
+        }
+
+        // check if key primary code match to space or done button key primary code
+        if (keyObject.getPrimaryCode() == Key.SPACE_BUTTON.getPrimaryCode() ||
+                keyObject.getPrimaryCode() == Key.DONE_BUTTON.getPrimaryCode()) {
+            return; // we don't want to buffer space or done key
+        }
+
+        /**
+         * BUFFERING
+         */
+
+        if (index >= BUFFER_SIZE) {
+            buffer = new KeyObject[BUFFER_SIZE];
+            index = 0;
+        }
+        buffer[index] = keyObject;
+        index++;
     }
 
     // index always point to the first available position in buffer
