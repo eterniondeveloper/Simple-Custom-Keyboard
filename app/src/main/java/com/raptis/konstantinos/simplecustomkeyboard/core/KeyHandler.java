@@ -3,6 +3,7 @@ package com.raptis.konstantinos.simplecustomkeyboard.core;
 import android.util.Log;
 
 import com.raptis.konstantinos.simplecustomkeyboard.util.DigraphType;
+import com.raptis.konstantinos.simplecustomkeyboard.util.Helper;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Key;
 import com.raptis.konstantinos.simplecustomkeyboard.util.KeyObject;
 
@@ -13,9 +14,6 @@ import java.util.HashMap;
  */
 public class KeyHandler {
 
-    // logcat id
-    private static final String CM_LOG = "cmlog";
-    private static final String kEY_LOG = "keylog";
     // variables
     public static final int BUFFER_SIZE = 15;
     private int index = 0;
@@ -29,10 +27,8 @@ public class KeyHandler {
     // constructor
     public KeyHandler() {
         keysMap = new HashMap<>();
-        for (Key[] keyArray : KeyFactory.activeKeys) {
-            for (Key key : keyArray) {
-                keysMap.put(key.getPrimaryCode(), key);
-            }
+        for (Key key : KeyFactory.keys) {
+            keysMap.put(key.getPrimaryCode(), key);
         }
     }
 
@@ -93,6 +89,8 @@ public class KeyHandler {
 
     // key pressed
     public void keyPressed(int primaryCode) {
+        //Log.i(Helper.TEST_LOG, primaryCode + "");
+        //--------------------------------------
         if (currentTimePressed == 0 && previousTimePressed == 0) {
             currentTimePressed = System.nanoTime();
             previousTimePressed = System.nanoTime();
@@ -103,6 +101,8 @@ public class KeyHandler {
 
     // key released
     public void keyReleased(int primaryCode) {
+        //Log.i(Helper.TEST_LOG, primaryCode + "");
+        //--------------------------------------
         if (currentTimeReleased == 0 && previousTimeReleased == 0) {
             currentTimeReleased = System.nanoTime();
             previousTimeReleased = System.nanoTime();
@@ -113,13 +113,13 @@ public class KeyHandler {
             double timePassed = (double) ((currentTimeReleased - previousTimePressed) / 1000000);  // milliseconds
             previousTimePressed = currentTimePressed;
             currentKey = new KeyObject(primaryCode, previousKey, timePassed, currentTimePressed, currentTimeReleased);
-            Log.i(CM_LOG, "Time passed : " + timePassed + " ms" + "\n");
+            Log.i(Helper.CM_LOG, "Time passed : " + timePassed + " ms" + "\n");
             previousTimeReleased = currentTimeReleased;
             previousKey = currentKey;
         }
         // add key object to buffer
         add(currentKey);
-        Log.i(kEY_LOG, currentKey.toString());
+        Log.i(Helper.kEY_LOG, currentKey.toString());
     }
 
 }

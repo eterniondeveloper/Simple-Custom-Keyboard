@@ -27,13 +27,17 @@ public enum Key {
 
     // Line 5
     COMMA_BUTTON(',', 44, 4, 0, Status.ACTIVE), SLASH_BUTTON('/', 47, 4, 1, Status.ACTIVE), SPACE_BUTTON(' ', 32, 4, 2, Status.INACTIVE), DELETE_BUTTON('←', -5, 4, 3, Status.INACTIVE),
-    DONE_BUTTON('→', -4, 4, 4, Status.INACTIVE);
+    DONE_BUTTON('→', -4, 4, 4, Status.INACTIVE),
+
+    // Alternate keys (@, !, :)
+    AT_ANNOTATION_BUTTON('@', 64, 2, 9, Status.ACTIVE), EXCLAMATION_MARK_BUTTON('!', 33, 3, 9, Status.ACTIVE), COLON_BUTTON(':', 58, 3, 9, Status.ACTIVE);
 
     private char keyChar;
     private int primaryCode;
     private int row;
     private int column;
     private Status status;
+
 
     Key(char keyChar, int primaryCode, int row, int column, Status status) {
         this.keyChar = keyChar;
