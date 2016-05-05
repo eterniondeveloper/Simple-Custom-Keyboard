@@ -9,5 +9,6 @@ public class Helper {
     public static final String CM_LOG = "cmlog";
     public static final String kEY_LOG = "keylog";
     public static final String TEST_LOG = "testlog";
+    public static final String SWIPE_LOG = "swipelog";
 
 }

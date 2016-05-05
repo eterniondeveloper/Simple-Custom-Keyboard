@@ -1,38 +1,27 @@
 package com.raptis.konstantinos.simplecustomkeyboard.util;
 
-import com.raptis.konstantinos.simplecustomkeyboard.core.KeyFactory;
 import com.raptis.konstantinos.simplecustomkeyboard.core.KeyHandler;
-
-import java.io.Serializable;
 
 /**
  * Created by konstantinos on 17/4/2016.
  */
-public class KeyObject implements Serializable {
+public class KeyObject {
 
     // field variables
     private int primaryCode;
-    private KeyObject previous;
-    private char keyChar;
+    private Character keyChar;
     private double digraphTime;
     private long keyPressedTime;
     private long keyReleasedTime;
-    private char[] adjacentKeysArray;
     private DigraphType digraphType;
 
     // constructor
-    public KeyObject(int primaryCode, KeyObject previous, double digraphTime, long keyPressedTime, long keyReleasedTime) {
+    public KeyObject(int primaryCode, double digraphTime, long keyPressedTime, long keyReleasedTime) {
         this.primaryCode = primaryCode;
-        this.previous = previous;
         this.digraphTime = digraphTime;
         this.keyPressedTime = keyPressedTime;
         this.keyReleasedTime = keyReleasedTime;
         keyChar = KeyHandler.keysMap.get(primaryCode).getKeyChar();
-        adjacentKeysArray = KeyFactory.getNeighborsKeys(keyChar).toCharArray();
-    }
-
-    public KeyObject getPrevious() {
-        return previous;
     }
 
     public char getKeyChar() {
@@ -53,10 +42,6 @@ public class KeyObject implements Serializable {
         return primaryCode;
     }
 
-    public char[] getAdjacentKeysArray() {
-        return adjacentKeysArray;
-    }
-
     public void setKeyChar(char keyChar) {
         this.keyChar = keyChar;
     }
@@ -72,11 +57,12 @@ public class KeyObject implements Serializable {
     // to String
     @Override
     public String toString() {
-        if (previous == null) {
+        /*if (KeyHandler.index - 2 < 0) {
             return String.format("Current: %2c; Previous: %2c; Digraph Time: %7s ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, '-', '-', getHoldTime(), digraphType.toString());
         } else {
-            return String.format("Current: %2c; Previous: %2c; Digraph Time: %7.0f ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, previous.getKeyChar(), digraphTime, getHoldTime(), digraphType.toString());
-        }
+            return String.format("Current: %2c; Previous: %2c; Digraph Time: %7.0f ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, KeyHandler.buffer[KeyHandler.index - 2].getKeyChar(), digraphTime, getHoldTime(), digraphType.toString());
+        }*/
+        return String.format("Current: %2c; Digraph Time: %7.0f ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, digraphTime, getHoldTime(), digraphType.toString());
     }
 
 }

@@ -4,7 +4,6 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
-import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -64,22 +63,27 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onText(CharSequence text) {
+
     }
 
     @Override
     public void swipeDown() {
+
     }
 
     @Override
     public void swipeLeft() {
+
     }
 
     @Override
     public void swipeRight() {
+
     }
 
     @Override
     public void swipeUp() {
+
     }
 
     @Override
@@ -88,6 +92,13 @@ public class SimpleIME extends InputMethodService
         keyboard = new Keyboard(this, R.xml.qwerty);
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
+        /*kv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.i(Helper.TEST_LOG, "size: " + motionEvent.getSize() + "");
+                return false;
+            }
+        });*/
         return kv;
     }
 
@@ -108,6 +119,5 @@ public class SimpleIME extends InputMethodService
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
         }
     }
-
 
 }
