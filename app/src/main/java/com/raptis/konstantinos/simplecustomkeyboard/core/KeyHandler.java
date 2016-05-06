@@ -157,8 +157,11 @@ public class KeyHandler {
                 keyObject.getPrimaryCode() == Key.DONE_BUTTON.getPrimaryCode()) {
             return DigraphType.NULL;
         }
-        // digraph type will be SAME_KEY_DIGRAPH if previous key is the same with current
-        if(buffer.getPrevious().getPrimaryCode() == keyObject.getPrimaryCode()) {
+        // digraph type will be SAME_KEY_DIGRAPH if previous key is the same with current (based on coordinations)
+        int previousPrimaryCode =  buffer.getPrevious().getPrimaryCode();
+        int currentPrimaryCode = keyObject.getPrimaryCode();
+        if(keysMap.get(previousPrimaryCode).getColumn() == keysMap.get(currentPrimaryCode).getColumn() &&
+                keysMap.get(previousPrimaryCode).getRow() == keysMap.get(currentPrimaryCode).getRow()) {
             return DigraphType.SAME_KEY_DIGRAPH;
         }
         // current with it's previous
