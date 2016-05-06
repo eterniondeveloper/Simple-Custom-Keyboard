@@ -8,7 +8,6 @@ import com.raptis.konstantinos.simplecustomkeyboard.util.Key;
 import com.raptis.konstantinos.simplecustomkeyboard.util.KeyObject;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Orientation;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Status;
-
 import java.util.HashMap;
 
 /**
@@ -129,6 +128,7 @@ public class KeyHandler {
         // add key object to buffer
         boolean result = add(currentKey);
         ///////////////////////////
+        // display only if key added to buffer otherwise -> NullPointerException will be thrown
         if(result) {
             Log.i(Helper.kEY_LOG, currentKey.toString());
             Log.i(Helper.TEST_LOG, buffer.display());

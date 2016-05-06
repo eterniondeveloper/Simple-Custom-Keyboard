@@ -4,14 +4,11 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import com.raptis.konstantinos.simplecustomkeyboard.core.KeyHandler;
-import com.raptis.konstantinos.simplecustomkeyboard.util.Helper;
 
 /**
  * Created by konstantinos on 17/4/2016.

@@ -26,10 +26,14 @@ public class Buffer {
 		}
 		
 		if (index >= BUFFER_SIZE) {
-			//char last = buffer[index - 1];
+			// Any pre - empty buffer operations here
+			//--------------------------------------------------------------------------------------
+
+			//--------------------------------------------------------------------------------------
+			// Empty buffer here
 			bufferArray = new KeyObject[BUFFER_SIZE];
+			// Initialize index
             index = 0;
-            //buffer[index++] = last;
         }
 		bufferArray[index] = keyObject;
         index++;
