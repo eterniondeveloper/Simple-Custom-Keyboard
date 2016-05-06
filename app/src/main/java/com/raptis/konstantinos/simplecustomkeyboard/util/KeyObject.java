@@ -57,11 +57,6 @@ public class KeyObject {
     // to String
     @Override
     public String toString() {
-        /*if (KeyHandler.index - 2 < 0) {
-            return String.format("Current: %2c; Previous: %2c; Digraph Time: %7s ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, '-', '-', getHoldTime(), digraphType.toString());
-        } else {
-            return String.format("Current: %2c; Previous: %2c; Digraph Time: %7.0f ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, KeyHandler.buffer[KeyHandler.index - 2].getKeyChar(), digraphTime, getHoldTime(), digraphType.toString());
-        }*/
         return String.format("Current: %2c; Digraph Time: %7.0f ms; Hold Time: %7.0f ms; Digraph Type: %-1s", keyChar, digraphTime, getHoldTime(), digraphType.toString());
     }
 

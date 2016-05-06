@@ -7,6 +7,8 @@ import com.raptis.konstantinos.simplecustomkeyboard.util.Helper;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Key;
 import com.raptis.konstantinos.simplecustomkeyboard.util.KeyObject;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Orientation;
+import com.raptis.konstantinos.simplecustomkeyboard.util.Status;
+
 import java.util.HashMap;
 
 /**
@@ -57,22 +59,15 @@ public class KeyHandler {
         }
     }
 
-    public void add(KeyObject keyObject) {
+    public boolean add(KeyObject keyObject) {
 
         /**
          * CHECK FOR INACTIVE KEYS
          */
 
-        // check if key primary code match to delete button key primary code
-        if (keyObject.getPrimaryCode() == Key.DELETE_BUTTON.getPrimaryCode()) {
-            errorRateCounter++;
-            return; // we don't want to buffer delete key
-        }
-
-        // check if key primary code match to space or done button key primary code
-        if (keyObject.getPrimaryCode() == Key.SPACE_BUTTON.getPrimaryCode() ||
-                keyObject.getPrimaryCode() == Key.DONE_BUTTON.getPrimaryCode()) {
-            return; // we don't want to buffer space or done key
+        // Status inactive keys for now : space, delete, done
+        if (keysMap.get(keyObject.getPrimaryCode()).getStatus() == Status.INACTIVE) {
+            return false; // we don't want to buffer status = inactive keys
         }
 
         /**
@@ -90,6 +85,7 @@ public class KeyHandler {
             DigraphType digraphType = getDigraphType(keyObject);
             keyObject.setDigraphType(digraphType);
         }
+        return true;
     }
 
     // get buffer
@@ -131,9 +127,12 @@ public class KeyHandler {
             previousTimeReleased = currentTimeReleased;
         }
         // add key object to buffer
-        add(currentKey);
-        Log.i(Helper.kEY_LOG, currentKey.toString());
-        Log.i(Helper.TEST_LOG, buffer.display());
+        boolean result = add(currentKey);
+        ///////////////////////////
+        if(result) {
+            Log.i(Helper.kEY_LOG, currentKey.toString());
+            Log.i(Helper.TEST_LOG, buffer.display());
+        }
     }
 
     //----------------------------------------------------------------------------------------------
