@@ -2,6 +2,12 @@
 
 This project goal is to create a light machine learning keyboard, which will authenticate a user by tracking down his key typing behaviour.
 
+### Log Setup ###
+
+* Custom Log -> code : <cmlog>
+* Key Log -> code : <keylog>
+* Test Log -> code : <testlog>
+
 ### How do I get set up? ###
 
 * android studio application
