@@ -37,7 +37,7 @@ public class SimpleIME extends InputMethodService
                 kv.invalidateAllKeys();
                 break;
             case Keyboard.KEYCODE_DONE:
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
                 break;
             default:
                 char code = (char) primaryCode;
