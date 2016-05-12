@@ -4,11 +4,16 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
 import com.raptis.konstantinos.simplecustomkeyboard.core.KeyHandler;
+import com.raptis.konstantinos.simplecustomkeyboard.util.Helper;
+
+import java.util.List;
 
 /**
  * Created by konstantinos on 17/4/2016.
@@ -22,6 +27,7 @@ public class SimpleIME extends InputMethodService
     private boolean caps = false;
     // key handler
     private KeyHandler keyHandler = new KeyHandler();
+    private EditorInfo info;
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
@@ -30,14 +36,27 @@ public class SimpleIME extends InputMethodService
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
+
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 caps = !caps;
                 keyboard.setShifted(caps);
                 kv.invalidateAllKeys();
+                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
                 break;
             case Keyboard.KEYCODE_DONE:
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT));
+                //ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                switch (info.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
+                    case EditorInfo.IME_ACTION_NEXT:
+                        ic.performEditorAction(EditorInfo.IME_ACTION_NEXT);
+                        break;
+                    case EditorInfo.IME_ACTION_DONE:
+                        ic.performEditorAction(EditorInfo.IME_ACTION_DONE);
+                        break;
+                    default:
+                        ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                        break;
+                }
                 break;
             default:
                 char code = (char) primaryCode;
@@ -49,18 +68,45 @@ public class SimpleIME extends InputMethodService
     }
 
     @Override
+    public void onStartInputView(EditorInfo info, boolean restarting) {
+        this.info = info;
+
+        List<Keyboard.Key> keys = keyboard.getKeys();
+
+        switch (info.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
+            case EditorInfo.IME_ACTION_NEXT:
+                Log.i(Helper.SWIPE_LOG, "IME_ACTION_NEXT");
+                kv.invalidateAllKeys();
+                keys.get(keys.size() - 1).label = "NEXT";
+                break;
+            case EditorInfo.IME_ACTION_DONE:
+                Log.i(Helper.SWIPE_LOG, "KEYCODE_DONE");
+                kv.invalidateAllKeys();
+                keys.get(keys.size() - 1).label = "DONE";
+                break;
+            default:
+                Log.i(Helper.SWIPE_LOG, "DEFAULT");
+                break;
+        }
+
+        super.onStartInputView(info, restarting);
+    }
+
+    @Override
     public void onPress(int primaryCode) {
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, primaryCode));
         keyHandler.keyPressed(primaryCode);
     }
 
     @Override
     public void onRelease(int primaryCode) {
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, primaryCode));
         keyHandler.keyReleased(primaryCode);
     }
 
     @Override
     public void onText(CharSequence text) {
-
+        Log.i(Helper.SWIPE_LOG, "onText");
     }
 
     @Override

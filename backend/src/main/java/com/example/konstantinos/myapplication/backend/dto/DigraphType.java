@@ -1,4 +1,4 @@
-package com.raptis.konstantinos.simplecustomkeyboard.util;
+package com.example.konstantinos.myapplication.backend.dto;
 
 /**
  * Created by konstantinos on 17/4/2016.

@@ -38,7 +38,6 @@ public enum Key {
     private int column;
     private Status status;
 
-
     Key(char keyChar, int primaryCode, int row, int column, Status status) {
         this.keyChar = keyChar;
         this.primaryCode = primaryCode;
@@ -66,4 +65,5 @@ public enum Key {
     public Status getStatus() {
         return status;
     }
+
 }
