@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
-import com.raptis.konstantinos.simplecustomkeyboard.core.KeyHandler;
 import com.raptis.konstantinos.simplecustomkeyboard.util.Helper;
 
 import java.util.List;
@@ -21,16 +20,19 @@ import java.util.List;
 public class SimpleIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
 
+
+
     // keyboard
     private KeyboardView kv;
     private Keyboard keyboard;
     private boolean caps = false;
     // key handler
-    private KeyHandler keyHandler = new KeyHandler();
     private EditorInfo info;
+    private int keyMask = 1000;
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+        Log.i(Helper.SWIPE_LOG, "onKey - KeyboardView.OnKeyboardActionListener");
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
         switch (primaryCode) {
@@ -69,44 +71,42 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onStartInputView(EditorInfo info, boolean restarting) {
+        super.onStartInputView(info, restarting);
         this.info = info;
 
         List<Keyboard.Key> keys = keyboard.getKeys();
 
         switch (info.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
             case EditorInfo.IME_ACTION_NEXT:
-                Log.i(Helper.SWIPE_LOG, "IME_ACTION_NEXT");
                 kv.invalidateAllKeys();
                 keys.get(keys.size() - 1).label = "NEXT";
                 break;
             case EditorInfo.IME_ACTION_DONE:
-                Log.i(Helper.SWIPE_LOG, "KEYCODE_DONE");
                 kv.invalidateAllKeys();
                 keys.get(keys.size() - 1).label = "DONE";
                 break;
             default:
-                Log.i(Helper.SWIPE_LOG, "DEFAULT");
                 break;
         }
-
-        super.onStartInputView(info, restarting);
     }
 
     @Override
     public void onPress(int primaryCode) {
-        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, primaryCode));
-        keyHandler.keyPressed(primaryCode);
+        Log.i(Helper.SWIPE_LOG, "onPress");
+        int maskedPrimaryCode = keyMask + primaryCode;
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, maskedPrimaryCode));
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, primaryCode));
-        keyHandler.keyReleased(primaryCode);
+        Log.i(Helper.SWIPE_LOG, "onRelease");
+        int maskedPrimaryCode = keyMask + primaryCode;
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, maskedPrimaryCode));
     }
 
     @Override
     public void onText(CharSequence text) {
-        Log.i(Helper.SWIPE_LOG, "onText");
+
     }
 
     @Override
@@ -135,13 +135,6 @@ public class SimpleIME extends InputMethodService
         keyboard = new Keyboard(this, R.xml.qwerty);
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
-        /*kv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.i(Helper.TEST_LOG, "size: " + motionEvent.getSize() + "");
-                return false;
-            }
-        });*/
         return kv;
     }
 
@@ -162,5 +155,4 @@ public class SimpleIME extends InputMethodService
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
         }
     }
-
 }
