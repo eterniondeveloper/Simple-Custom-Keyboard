@@ -6,6 +6,7 @@ import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by konstantinos on 17/4/2016.
  */
 public class SimpleIME extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener {
+        implements KeyboardView.OnKeyboardActionListener, KeyboardView.OnTouchListener {
 
 
 
@@ -32,7 +33,7 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        Log.i(Helper.SWIPE_LOG, "onKey - KeyboardView.OnKeyboardActionListener");
+        //Log.i(Helper.SWIPE_LOG, "onKey - KeyboardView.OnKeyboardActionListener");
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
         switch (primaryCode) {
@@ -92,14 +93,14 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onPress(int primaryCode) {
-        Log.i(Helper.SWIPE_LOG, "onPress");
+        //Log.i(Helper.SWIPE_LOG, "onPress");
         int maskedPrimaryCode = keyMask + primaryCode;
         getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, maskedPrimaryCode));
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        Log.i(Helper.SWIPE_LOG, "onRelease");
+        //Log.i(Helper.SWIPE_LOG, "onRelease");
         int maskedPrimaryCode = keyMask + primaryCode;
         getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, maskedPrimaryCode));
     }
@@ -135,7 +136,14 @@ public class SimpleIME extends InputMethodService
         keyboard = new Keyboard(this, R.xml.qwerty);
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
+        //kv.setOnTouchListener(this);
         return kv;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        Log.i(Helper.TEST_LOG, motionEvent.getSize() + "");
+        return false;
     }
 
     private void playClick(int keyCode) {
@@ -155,4 +163,5 @@ public class SimpleIME extends InputMethodService
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
         }
     }
+
 }
