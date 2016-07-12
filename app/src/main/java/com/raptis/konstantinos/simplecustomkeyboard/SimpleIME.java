@@ -21,8 +21,6 @@ import java.util.List;
 public class SimpleIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener, KeyboardView.OnTouchListener {
 
-
-
     // keyboard
     private KeyboardView kv;
     private Keyboard keyboard;
@@ -33,13 +31,11 @@ public class SimpleIME extends InputMethodService
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        //Log.i(Helper.SWIPE_LOG, "onKey - KeyboardView.OnKeyboardActionListener");
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
-
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 caps = !caps;
@@ -48,7 +44,6 @@ public class SimpleIME extends InputMethodService
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT));
                 break;
             case Keyboard.KEYCODE_DONE:
-                //ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 switch (info.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
                     case EditorInfo.IME_ACTION_NEXT:
                         ic.performEditorAction(EditorInfo.IME_ACTION_NEXT);

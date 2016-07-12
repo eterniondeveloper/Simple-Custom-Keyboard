@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"H01Z-1ikbwOw463Un2bFZHenx1g/3HjA5Yx3sS9RY3MOO8qTeII1eow\"",
+ "etag": "\"H01Z-1ikbwOw463Un2bFZHenx1g/lupNPC6c_dUkOrWTZhK2OgaQGs8\"",
  "discoveryVersion": "v1",
  "id": "myApi:v1",
  "name": "myApi",
@@ -73,11 +73,87 @@
   }
  },
  "schemas": {
+  "DigraphType": {
+   "id": "DigraphType",
+   "type": "string",
+   "enum": [
+    "ADJACENT_HORIZONTAL_DIGRAPH",
+    "ADJACENT_VERTICAL_DIGRAPH",
+    "NON_ADJACENT_HORIZONTAL_DIGRAPH",
+    "NON_ADJACENT_VERTICAL_DIGRAPH",
+    "NULL",
+    "SAME_KEY_DIGRAPH"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "KeyObject": {
+   "id": "KeyObject",
+   "type": "object",
+   "properties": {
+    "digraphTime": {
+     "type": "number",
+     "format": "double"
+    },
+    "digraphType": {
+     "$ref": "DigraphType"
+    },
+    "holdTime": {
+     "type": "number",
+     "format": "double"
+    },
+    "keyChar": {
+     "type": "string"
+    },
+    "keyPressedTime": {
+     "type": "string",
+     "format": "int64"
+    },
+    "keyReleasedTime": {
+     "type": "string",
+     "format": "int64"
+    },
+    "primaryCode": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
   "MyBean": {
    "id": "MyBean",
    "type": "object",
    "properties": {
     "data": {
+     "type": "string"
+    }
+   }
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "email": {
+     "type": "string"
+    },
+    "firstName": {
+     "type": "string"
+    },
+    "keys": {
+     "type": "array",
+     "items": {
+      "$ref": "KeyObject"
+     }
+    },
+    "lastName": {
+     "type": "string"
+    },
+    "password": {
      "type": "string"
     }
    }
@@ -98,6 +174,10 @@
    "parameterOrder": [
     "name"
    ],
+   "request": {
+    "$ref": "User",
+    "parameterName": "resource"
+   },
    "response": {
     "$ref": "MyBean"
    },
